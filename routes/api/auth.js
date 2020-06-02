@@ -12,6 +12,7 @@ const User = require('../../models/User');
 // @desc     Get user by token
 // @access   Private
 router.get('/', auth, async (req, res) => {
+  //in this async method we are going to get the user id by token
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);

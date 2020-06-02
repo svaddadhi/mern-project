@@ -12,8 +12,11 @@ const User = require('../../models/User');
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
+
+// here we are doing the post method to create a user
 router.post(
   '/',
+  // these checks are happening because we want to make sure the user is adding in proper information
   [
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -22,14 +25,18 @@ router.post(
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 }),
   ],
+
+  //here we have an async function that will check the validation of the request for any errors
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    // if not then we are going to get the information from the body of the request
     const { name, email, password } = req.body;
 
+    // checking if the user already exists or not
     try {
       let user = await User.findOne({ email });
 
@@ -48,6 +55,7 @@ router.post(
         { forceHttps: true }
       );
 
+      //if not then we are going to create a new user here
       user = new User({
         name,
         email,
@@ -55,18 +63,21 @@ router.post(
         password,
       });
 
+      //here we are generating a salt and hashing the password of the new user
       const salt = await bcrypt.genSalt(10);
 
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
 
+      //taking a payload based on the userid
       const payload = {
         user: {
           id: user.id,
         },
       };
 
+      //signing the jwt token received from user to verify it
       jwt.sign(
         payload,
         config.get('jwtSecret'),

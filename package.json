@@ -12,6 +12,7 @@
   "dependencies": {
     "-": "0.0.1",
     "D": "^1.0.0",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "concurrently": "^5.2.0",
     "config": "^3.3.1",

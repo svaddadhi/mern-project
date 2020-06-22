@@ -273,7 +273,6 @@ router.put(
       school,
       degree,
       fieldofstudy,
-      location,
       from,
       to,
       current,

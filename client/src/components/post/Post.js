@@ -10,7 +10,7 @@ import PostItem from '../posts/PostItem';
 
 const Post = ({ getPost, post: { post, loading }, match }) => {
   useEffect(() => {
-    getPost(match.params.if);
+    getPost(match.params.id);
   }, [getPost]);
 
   return loading || post === null ? (
